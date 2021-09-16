@@ -22,7 +22,8 @@ class OnboardingStatisticsListRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'per_page' => 'numeric',
+            'sort' => 'array',
+            'filter' => 'array',
         ];
     }
 }

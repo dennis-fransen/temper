@@ -7,7 +7,6 @@ namespace App\Temper\Statistics\Adapters;
 use App\Temper\Statistics\Collections\OnboardingCollection;
 use App\Temper\Statistics\Interfaces\ImporterInterface;
 use App\Temper\Statistics\Models\OnboardingStatistic;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\FileNotFoundException;
 
@@ -50,16 +49,18 @@ class ImportFromCsv implements ImporterInterface
         return $this;
     }
 
-    /**
-     * @return Collection
-     */
-    protected function fetchData(string $source): array
+    public function fetchData(string $source): string
     {
-        $data = Storage::get($source);
+        return Storage::get($source);
+    }
 
+    private function sanitizeData(string $data): OnboardingCollection
+    {
         $data = explode("\n", $data);
 
         $rowCount = 0;
+
+        $cleanData = [];
 
         foreach ($data as $line) {
             ++$rowCount;
@@ -68,26 +69,21 @@ class ImportFromCsv implements ImporterInterface
             }
             if (1 === $rowCount) {
                 if (! $this->template) {
-                    $headerData = explode("\t", $line);
-                    $this->setTemplate($headerData);
+                    $fieldNames = explode("\t", $line);
+                    $this->setTemplate($fieldNames);
                     continue;
                 }
             }
 
-            if ('' !== $line) {
-                $rawData[] = explode("\t", $line);
+            if ('' !== str_replace(' ', '', $line)) {
+                $cleanData[] = explode("\t", $line);
             }
         }
 
-        return $rawData;
-    }
-
-    private function sanitizeData(array $data): OnboardingCollection
-    {
         $onboardingStatisticsCollection = new OnboardingCollection();
 
         if ($this->template) {
-            $data = collect($data);
+            $data = collect($cleanData);
 
             $template = $this->template;
 

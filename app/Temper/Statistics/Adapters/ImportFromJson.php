@@ -30,7 +30,7 @@ class ImportFromJson implements ImporterInterface
     /**
      * @return Collection
      */
-    protected function fetchData(string $source): string
+    public function fetchData(string $source): string
     {
         return Storage::get($source);
     }
@@ -38,7 +38,6 @@ class ImportFromJson implements ImporterInterface
     private function sanitizeData(string $data): OnboardingCollection
     {
         $data = json_decode($data, true);
-
         $onboardingStatisticsCollection = new OnboardingCollection();
 
         foreach ($data as $item) {
