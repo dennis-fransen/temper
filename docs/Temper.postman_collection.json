@@ -1,0 +1,34 @@
+{
+	"info": {
+		"_postman_id": "3bf2c70f-92c7-4a86-84e8-cbc1f00e5f6f",
+		"name": "Temper",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get statistics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/statistics/onboarding/list",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"statistics",
+						"onboarding",
+						"list"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
